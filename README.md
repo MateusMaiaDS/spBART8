@@ -1,12 +1,12 @@
 
-# spBART5
+# spBART8
 
 
 ## Installation
 
-You can install the development version of spBART2 from [GitHub](https://github.com/) with:
+You can install the development version of spBART8 from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("MateusMaiaDS/spBART5")
+devtools::install_github("MateusMaiaDS/spBART8")
 ```
