@@ -1512,10 +1512,10 @@ void updateTauB(Forest all_trees,
                                 if(t_nodes[i]->betas.n_rows<1) {
                                         continue;
                                 }
-
-                                beta_sq_sum_total(j) = beta_sq_sum_total(j) + arma::as_scalar(t_nodes[i]->betas.col(j).t()*data.P*t_nodes[i]->betas.col(j));
-                                beta_count_total(j) = beta_count_total(j) + t_nodes[i]->betas.n_rows;
-
+                                if(t_nodes[i]->ancestors(j)>0){
+                                        beta_sq_sum_total(j) = beta_sq_sum_total(j) + arma::as_scalar(t_nodes[i]->betas.col(j).t()*data.P*t_nodes[i]->betas.col(j));
+                                        beta_count_total(j) = beta_count_total(j) + t_nodes[i]->betas.n_rows;
+                                }
                         }
                 }
         }
@@ -1640,7 +1640,9 @@ Rcpp::List sbart(arma::mat x_train,
                         stump);
 
         // Getting the Penalisation difference matrix
-        data.P = D.t()*D;
+        data.P = D.t()*D + arma::eye(D.n_cols,D.n_cols)*1e-10;
+        data.P(0,0) = data.P(0,0) + data.n_tree;
+        data.P(data.P.n_rows-1, data.P.n_cols-1) = data.P(data.P.n_rows-1, data.P.n_cols-1) + data.n_tree;
         data.P_inv = arma::inv(data.P);
 
 
@@ -1770,7 +1772,7 @@ Rcpp::List sbart(arma::mat x_train,
 
                 // Updating the Tau
                 // std::cout << "Error TauB: " << data.tau_b << endl;
-                // updateTauB(all_forest,data);
+                updateTauB(all_forest,data);
                 // updateTauBintercept(all_forest,data,a_tau_b,d_tau_b);
 
                 // std::cout << "Error Delta: " << data.delta << endl;

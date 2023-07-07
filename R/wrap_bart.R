@@ -145,8 +145,8 @@ rbart <- function(x_train,
      if(scale_bool){
         y_scale <- normalize_bart(y = y,a = min_y,b = max_y)
         tau_b_0 <- (4*n_tree*(kappa^2))
-        tau_b <- tau_mu <- (4*n_tree*(kappa^2))
-        # tau_b <- tau_mu <- 0.1
+        # tau_b <- tau_mu <- 0.1*(4*n_tree*(kappa^2))
+        tau_b <- tau_mu <- 0.1
 
      } else {
         y_scale <- y
